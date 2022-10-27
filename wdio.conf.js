@@ -1,6 +1,7 @@
 exports.config = {
     user: process.env.SAUCE_USERNAME,
     key: process.env.SAUCE_ACCESS_KEY,
+    region: 'eu',
     //
     // ====================
     // Runner Configuration
@@ -57,8 +58,9 @@ exports.config = {
             platformName: 'Windows 10',
             acceptInsecureCerts: true,
             'sauce:options': {
-                build: 'wdio build - windows',
-                name: 'windows test'
+                build: 'wdio build - windows chrome',
+                name: 'windows test',
+                'tunnelIdentifier': 'saucechaffe'
             }
         },
         {
@@ -68,10 +70,23 @@ exports.config = {
             platformName: 'macOS 12',
             acceptInsecureCerts: true,
             'sauce:options': {
-                build: 'wdio build - macos',
-                name: 'macos test'
+                build: 'wdio build - macos firefox',
+                name: 'macos test',
+                'tunnelIdentifier': 'saucechaffe'
             }
         },
+        {
+            maxInstances: 5,
+            browserName: 'safari',
+            browserVersion: '16',
+            platformName: 'macOS 12',
+            acceptInsecureCerts: true,
+            'sauce:options': {
+                build: 'wdio build - macos safari',
+                name: 'macos test',
+                'tunnelIdentifier': 'saucechaffe'
+            }
+        }
 
 ],
     //
@@ -122,7 +137,12 @@ exports.config = {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
     
-    services: ['sauce'],
+    services: [
+        [
+        'sauce', {
+        sauceConnect: true,
+    }]
+],
     
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
